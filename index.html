@@ -1,95 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="UTF-8">
-  <title>LiveP2000 Feed</title>
-  <link rel="STYLESHEET" href="list.css" type="text/css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Homepagina - Kies een provincie</title>
 </head>
 <body>
-  <button onclick="showSection('section1')">Brandweer</button>
-  <button onclick="showSection('section2')">Ambulance</button>
-  <button onclick="showSection('section3')">Politie</button>
 
-  <div class="section" id="section1">
-    <h2>Meldingen voor de Brandweer</h2>
-    <div id="liveFeed1"></div>
-  </div>
+<h1>Welkom, kies een provincie:</h1>
 
-  <div class="section" id="section2">
-    <h2>Meldingen voor Ambulance</h2>
-    <div id="liveFeed2"></div>
-  </div>
+<div id="provinces">
+<button class="button-p" onclick="window.location.href='drenthe.html'" role = "button"><span class="text">Drenthe</span></button>
+<button class="button-p" onclick="window.location.href='flevoland.html'" role="button"><span class="text">Flevoland</span></button>
+<button class="button-p" onclick="window.location.href='friesland.html'" role="button"><span class="text">Friesland</span></button>
+<button class="button-p" onclick="window.location.href='gelderland.html'" role="button"><span class="text">Gelderland</span></button>
+<button class="button-p" onclick="window.location.href='groningen.html'" role="button"><span class="text">Groningen</span></button>
+<button class="button-p" onclick="window.location.href='limburg.html'" role="button"><span class="text">Limburg</span></button>
+<button class="button-p" onclick="window.location.href='noordbrabant.html'" role="button"><span class="text">Noord-Brabant</span></button>
+<button class="button-p" onclick="window.location.href='noordholland.html'" role="button"><span class="text">Noord-Holland</span></button>
+<button class="button-p" onclick="window.location.href='overijssel.html'" role="button"><span class="text">Overijssel</span></button>
+<button class="button-p" onclick="window.location.href='utrecht.html'" role="button"><span class="text">Utrecht</span></button>
+<button class="button-p" onclick="window.location.href='zeeland.html'" role="button"><span class="text">Zeeland</span></button>
+<button class="button-p" onclick="window.location.href='zuidholland.html'" role="button"><span class="text">Zuid-Holland</span></button>
+</div>
 
-  <div class="section" id="section3">
-    <h2>Meldingen voor Politie</h2>
-    <div id="liveFeed3"></div>
-  </div>
+<div id="directbutton">
+<button class="direct"><span>Of bekijk de meldingen direct op de kaart</span></button>
+</div>
 
-  <script>
-    async function fetchData(r, d, containerId) {
-      try {
-        const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
+<div id="helpbutton">
+<button class="help" onclick="window.location.href='help.html'" role = "button"><span>?</span></button>
+</div>
 
-        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-        const data = await response.json(); // Get JSON response from proxy
-
-        // Parse the fetched data from the proxy response
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
-
-        // Extract specific elements or attributes from the XML
-        const incidents = xmlDoc.getElementsByTagName('item');
-        const formattedContent = [];
-
-        for (let i = 0; i < incidents.length; i++) {
-          const incident = incidents[i];
-          const title = incident.querySelector('title')?.textContent || 'Title not available';
-          const description = incident.querySelector('description')?.textContent || 'Description not available';
-          const latitudeElement = incident.getElementsByTagNameNS('*', 'lat')[0];
-          const longitudeElement = incident.getElementsByTagNameNS('*', 'long')[0];
-
-          let latitude = 'Latitude not available';
-          let longitude = 'Longitude not available';
-
-          if (latitudeElement && longitudeElement) {
-            latitude = latitudeElement.textContent || 'Latitude not available';
-            longitude = longitudeElement.textContent || 'Longitude not available';
-
-            formattedContent.push(`<div class="incident">
-              <p class="title">${title}</p>
-              <p class="description">${description}</p>
-              <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
-            </div>`);
-          } else {
-            formattedContent.push(`<div class="incident">
-              <p class="title">${title}</p>
-              <p class="description">${description}</p>
-              <p class="coordinates">Coordinates not available</p>
-            </div>`);
-          }
-        }
-
-        // Display the formatted content in the respective section's div
-        document.getElementById(containerId).innerHTML = formattedContent.join('');
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    }
-
-    async function showSection(sectionId) {
-      const sections = document.getElementsByClassName('section');
-      for (let i = 0; i < sections.length; i++) {
-        sections[i].style.display = 'none';
-      }
-      document.getElementById(sectionId).style.display = 'block';
-
-      const sectionNumber = sectionId.slice(-1);
-      fetchData(1, sectionNumber, `liveFeed${sectionNumber}`);
-    }
-
-    // Initial load of the default section
-    showSection('section1');
-  </script>
 </body>
 </html>
