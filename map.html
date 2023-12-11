@@ -14,9 +14,11 @@
     window.location.href = 'list.html';
   }
   </script>
+  <button onclick="window.location.href='index.html'">Verander uw locatie</button>
   <button onclick="showSection('section1')">Brandweer</button>
   <button onclick="showSection('section2')">Ambulance</button>
   <button onclick="showSection('section3')">Politie</button>
+  <button onclick="showSection('section4')">KNRM</button>
   <button onclick="setRegion()">List</button>
 
   <div class="section" id="section1">
@@ -32,6 +34,11 @@
   <div class="section" id="section3">
     <h2>Meldingen voor Politie</h2>
     <div id="liveFeed3"></div>
+  </div>
+
+  <div class="section" id="section4">
+    <h2>Meldingen voor KNRM</h2>
+    <div id="liveFeed4"></div>
   </div>
 
   <div id="map"></div>
@@ -53,7 +60,7 @@
       const incidents = xmlDoc.getElementsByTagName('item');
       const formattedContent = [];
 
-      let map = L.map('map').setView([51.505, -0.09], 13); // Default view
+      let map = L.map('map').setView([52.3676, 4.9041], 13); // Default view
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
