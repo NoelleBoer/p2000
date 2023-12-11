@@ -7,9 +7,17 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
+  <script>
+  function setRegion() {
+    var r = localStorage.getItem('selectedRegion');
+    localStorage.setItem('selectedRegion', r);
+    window.location.href = 'list.html';
+  }
+  </script>
   <button onclick="showSection('section1')">Brandweer</button>
   <button onclick="showSection('section2')">Ambulance</button>
   <button onclick="showSection('section3')">Politie</button>
+  <button onclick="setRegion()">List</button>
 
   <div class="section" id="section1">
     <h2>Meldingen voor de Brandweer</h2>

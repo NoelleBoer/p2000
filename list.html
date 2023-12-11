@@ -6,9 +6,18 @@
   <link rel="STYLESHEET" href="list.css" type="text/css">
 </head>
 <body>
+  <script>
+    function setRegion() {
+      var r = localStorage.getItem('selectedRegion');
+      localStorage.setItem('selectedRegion', r);
+      window.location.href = 'map.html';
+    }
+  </script>
   <button onclick="showSection('section1')">Brandweer</button>
   <button onclick="showSection('section2')">Ambulance</button>
   <button onclick="showSection('section3')">Politie</button>
+  <button onclick="setRegion()">Map</button>
+
 
   <div class="section" id="section1">
     <h2>Meldingen voor de Brandweer</h2>
