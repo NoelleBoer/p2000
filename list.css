@@ -57,3 +57,8 @@ button:hover {
   margin-top: 5px;
   color: #999;
 }
+
+#map {
+  height: 400px;
+  width: 100%;
+}

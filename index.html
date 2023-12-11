@@ -6,22 +6,22 @@
   <link rel="STYLESHEET" href="list.css" type="text/css">
 </head>
 <body>
-  <button onclick="showSection('section1')">Show Section 1</button>
-  <button onclick="showSection('section2')">Show Section 2</button>
-  <button onclick="showSection('section3')">Show Section 3</button>
+  <button onclick="showSection('section1')">Brandweer</button>
+  <button onclick="showSection('section2')">Ambulance</button>
+  <button onclick="showSection('section3')">Politie</button>
 
   <div class="section" id="section1">
-    <h2>Section 1 (d=1)</h2>
+    <h2>Meldingen voor de Brandweer</h2>
     <div id="liveFeed1"></div>
   </div>
 
   <div class="section" id="section2">
-    <h2>Section 2 (d=2)</h2>
+    <h2>Meldingen voor Ambulance</h2>
     <div id="liveFeed2"></div>
   </div>
 
   <div class="section" id="section3">
-    <h2>Section 3 (d=3)</h2>
+    <h2>Meldingen voor Politie</h2>
     <div id="liveFeed3"></div>
   </div>
 
@@ -46,8 +46,8 @@
           const incident = incidents[i];
           const title = incident.querySelector('title')?.textContent || 'Title not available';
           const description = incident.querySelector('description')?.textContent || 'Description not available';
-          const latitudeElement = incident.querySelector('geo\\:lat');
-          const longitudeElement = incident.querySelector('geo\\:long');
+          const latitudeElement = incident.getElementsByTagNameNS('*', 'lat')[0];
+          const longitudeElement = incident.getElementsByTagNameNS('*', 'long')[0];
 
           let latitude = 'Latitude not available';
           let longitude = 'Longitude not available';
@@ -55,13 +55,19 @@
           if (latitudeElement && longitudeElement) {
             latitude = latitudeElement.textContent || 'Latitude not available';
             longitude = longitudeElement.textContent || 'Longitude not available';
-          }
 
-          formattedContent.push(`<div class="incident">
-            <p class="title">${title}</p>
-            <p class="description">${description}</p>
-            <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
-          </div>`);
+            formattedContent.push(`<div class="incident">
+              <p class="title">${title}</p>
+              <p class="description">${description}</p>
+              <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
+            </div>`);
+          } else {
+            formattedContent.push(`<div class="incident">
+              <p class="title">${title}</p>
+              <p class="description">${description}</p>
+              <p class="coordinates">Coordinates not available</p>
+            </div>`);
+          }
         }
 
         // Display the formatted content in the respective section's div
