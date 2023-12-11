@@ -85,7 +85,8 @@
       document.getElementById(sectionId).style.display = 'block';
 
       const sectionNumber = sectionId.slice(-1);
-      fetchData(1, sectionNumber, `liveFeed${sectionNumber}`);
+      var r = localStorage.getItem('selectedRegion');
+      fetchData(r, sectionNumber, `liveFeed${sectionNumber}`);
     }
 
     // Initial load of the default section

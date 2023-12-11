@@ -24,3 +24,5 @@ function getUserLocation() {
         console.error('Geolocation is not supported by this browser.');
       }
     }
+
+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
