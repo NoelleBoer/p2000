@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>LiveP2000 Feed</title>
   <link rel="STYLESHEET" href="list.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
   <script>
@@ -13,12 +14,12 @@
       window.location.href = 'map.html';
     }
   </script>
-  <button onclick="window.location.href='index.html'">Verander uw locatie</button>
-  <button onclick="showSection('section1')">Brandweer</button>
-  <button onclick="showSection('section2')">Ambulance</button>
-  <button onclick="showSection('section3')">Politie</button>
-  <button onclick="showSection('section4')">KNRM</button>
-  <button onclick="setRegion()">Map</button>
+  <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
+  <button class="fire-btn" onclick="showSection('section1')"><i class="fas fa-fire"></i> Brandweer</button>
+  <button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
+  <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
+  <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
+<button class="list-btn" onclick="setRegion()"><i class="fas fa-map"></i> Kaart</button>
 
 
   <div class="section" id="section1">
