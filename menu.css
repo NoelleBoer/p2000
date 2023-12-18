@@ -25,6 +25,16 @@ h1 {
   max-width: 800px;
 }
 
+#regions .button-p {
+  margin: auto;
+  margin-top: 15px;
+}
+
+#regions .button-p:first-child {
+  margin: auto;
+  margin-top: 10%;
+}
+
 .button-p {
   align-items: center;
   background-image: linear-gradient(144deg,#b58bff,#6a0dad);

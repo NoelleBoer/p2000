@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Zuid-Holland - Kies een regio</title>
   </head>
   <body>
@@ -12,10 +13,13 @@
         window.location.href = 'list.html';
       }
     </script>
-    <button onclick="setRegion('15')" class="button-p" style="margin-left:505px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Haaglanden</span></button>
-    <button onclick="setRegion('16')" class="button-p" style="margin-left:710px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Hollands Midden</span></button>
-    <button onclick="setRegion('17')" class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Rotterdam-Rijnmond</span></button>
-    <button onclick="setRegion('18')" class="button-p" style="margin-left:300px; margin-top:10px" role="button"><span style="padding:15px" class="text">Zuid-Holland-Zuid</span></button>
+    <div id="regions">
+      <button onclick="setRegion('15')" class="button-p" role="button"><span class="text">Haaglanden</span></button>
+      <button onclick="setRegion('16')" class="button-p" role="button"><span class="text">Hollands Midden</span></button>
+      <button onclick="setRegion('17')" class="button-p" role="button"><span class="text">Rotterdam-Rijnmond</span></button>
+      <button onclick="setRegion('18')" class="button-p" role="button"><span class="text">Zuid-Holland-Zuid</span></button>
+      <button class="button-p" role="button" class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> <span class="text">Kies uw provincie</span></button>
+    </div>
     <div id="helpbutton">
       <button class="help"><span>?</span></button>
     </div>

@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Noord-Brabant - Kies een regio</title>
   </head>
   <body>
@@ -12,9 +13,12 @@
         window.location.href = 'list.html';
       }
     </script>
-    <button onclick="setRegion('20')" class="button-p" style="margin-left:505px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Midden- en West-Brabant</span></button>
-    <button onclick="setRegion('21')" class="button-p" style="margin-left:710px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Brabant-Noord</span></button>
-    <button onclick="setRegion('22')" class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Brabant-Zuidoost</span></button>
+    <div id="regions">
+      <button onclick="setRegion('20')" class="button-p" role="button"><span class="text">Midden- en West-Brabant</span></button>
+      <button onclick="setRegion('21')" class="button-p" role="button"><span class="text">Brabant-Noord</span></button>
+      <button onclick="setRegion('22')" class="button-p" role="button"><span class="text">Brabant-Zuidoost</span></button>
+      <button class="button-p" role="button" class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> <span class="text">Kies uw provincie</span></button>
+    </div>
     <div id="helpbutton">
       <button class="help"><span>?</span></button>
     </div>
