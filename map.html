@@ -45,6 +45,7 @@
 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script>
+    let markers = []; // Initialize an array to store markers
     function setRegion() {
       var r = localStorage.getItem('selectedRegion');
       var d = localStorage.getItem('selectedService');
@@ -57,8 +58,24 @@
       console.log(localStorage.getItem('selectedService'));
     }
 
+    function displayMarkersOnMap(departmentNumber) {
+      // Clear existing markers from the map
+      markers.forEach(marker => {
+        map.removeLayer(marker);
+      });
+
+      // Add markers for the specified department to the map
+      markers.forEach(marker => {
+        const markerDepartment = marker.options.department; // Access department information from marker options
+
+        // Check if the marker belongs to the specified department
+        if (markerDepartment === departmentNumber) {
+          marker.addTo(map);
+        }
+      });
+    }
+
     async function fetchDataByDepartment(r, d, containerId) {
-      let markers = []; // Initialize an array to store markers
       const proxyUrl = 'https://api.allorigins.win/get?url=';
       let apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
 
@@ -82,23 +99,6 @@
       function addMarker(latitude, longitude, title, departmentNumber) {
         const newMarker = L.marker([latitude, longitude], { department: departmentNumber }).bindPopup(title);
         markers.push(newMarker); // Store the new marker in the markers array
-      }
-
-      function displayMarkersOnMap(departmentNumber) {
-        // Clear existing markers from the map
-        markers.forEach(marker => {
-          map.removeLayer(marker);
-        });
-
-        // Add markers for the specified department to the map
-        markers.forEach(marker => {
-          const markerDepartment = marker.options.department; // Access department information from marker options
-
-          // Check if the marker belongs to the specified department
-          if (markerDepartment === departmentNumber) {
-            marker.addTo(map);
-          }
-        });
       }
 
       for (let i = 0; i < incidents.length; i++) {
