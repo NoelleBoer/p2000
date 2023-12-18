@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" href="style.css">
-  <title>Zuid-Holland - Kies een regio</title>
-</head>
-<body>
-
-<h1>Kies een regio:</h1>
-<script>
-  function setRegion(region) {
-    localStorage.setItem('selectedRegion', region);
-    window.location.href = 'list.html';
-  }
-</script>
-
-<button onclick="setRegion('15')" class="button-p" style="margin-left:505px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Haaglanden</span></button>
-<button onclick="setRegion('16')" class="button-p" style="margin-left:710px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Hollands Midden</span></button>
-<button onclick="setRegion('17')" class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Rotterdam-Rijnmond</span></button>
-<button onclick="setRegion('18')" class="button-p" style="margin-left:300px; margin-top:10px" role="button"><span style="padding:15px" class="text">Zuid-Holland-Zuid</span></button>
-
-<div id="helpbutton">
-<button class="help"><span>?</span></button>
-</div>
-
-</body>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <title>Zuid-Holland - Kies een regio</title>
+  </head>
+  <body>
+    <h1>Kies een regio:</h1>
+    <script>
+      function setRegion(region) {
+        localStorage.setItem('selectedRegion', region);
+        window.location.href = 'list.html';
+      }
+    </script>
+    <button onclick="setRegion('15')" class="button-p" style="margin-left:505px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Haaglanden</span></button>
+    <button onclick="setRegion('16')" class="button-p" style="margin-left:710px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Hollands Midden</span></button>
+    <button onclick="setRegion('17')" class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Rotterdam-Rijnmond</span></button>
+    <button onclick="setRegion('18')" class="button-p" style="margin-left:300px; margin-top:10px" role="button"><span style="padding:15px" class="text">Zuid-Holland-Zuid</span></button>
+    <div id="helpbutton">
+      <button class="help"><span>?</span></button>
+    </div>
+  </body>
 </html>
