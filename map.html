@@ -3,16 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <title>LiveP2000 Feed</title>
-  <link rel="STYLESHEET" href="list.css" type="text/css">
+  <link rel="STYLESHEET" href="style.css" type="text/css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
+  <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
+  <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
+  <button class="fire-btn" onclick="showSection('section1')" onclick="setService(1)"><i class="fas fa-fire"></i> Brandweer</button>
+  <button class="ambulance-btn" onclick="showSection('section2')" onclick="setService(2)"><i class="fas fa-ambulance"></i> Ambulance</button>
+  <button class="police-btn" onclick="showSection('section3')" onclick="setService(3)"><i class="fas fa-shield-alt"></i> Politie</button>
+  <button class="boat-btn" onclick="showSection('section4')" onclick="setService(4)"><i class="fas fa-ship"></i> KNRM</button>
+  <button class="list-btn" onclick="setRegion()"><i class="fas fa-list"></i> Lijst</button>
+
+  <div class="section" id="section1">
+    <h2>Meldingen voor de Brandweer</h2>
+    <div id="liveFeed1"></div>
+  </div>
+
+  <div class="section" id="section2">
+    <h2>Meldingen voor de Ambulance</h2>
+    <div id="liveFeed2"></div>
+  </div>
+
+  <div class="section" id="section3">
+    <h2>Meldingen voor de Politie</h2>
+    <div id="liveFeed3"></div>
+  </div>
+
+  <div class="section" id="section4">
+    <h2>Meldingen voor de KNRM</h2>
+    <div id="liveFeed4"></div>
+  </div>
+
+  <div class="section" id="section5">
+    <h2>Alle meldingen</h2>
+    <div id="liveFeed5"></div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script>
     function setRegion() {
       var r = localStorage.getItem('selectedRegion');
+      var d = localStorage.getItem('selectedService');
       localStorage.setItem('selectedRegion', r);
+      localStorage.setItem('selectedService', d);
       window.location.href = 'list.html';
+    }
+    function setService(d) {
+      localStorage.setItem('selectedService', d);
+      console.log(localStorage.getItem('selectedService'));
     }
 
     async function fetchDataByDepartment(r, d, containerId) {
@@ -101,55 +143,24 @@
 
       const sectionNumber = sectionId.slice(-1);
       var r = localStorage.getItem('selectedRegion');
-
+      localStorage.setItem('selectedService', sectionNumber);
       // Check the section number and fetch data accordingly
-      if (sectionNumber === '5') {
-        fetchDataByDepartment(r, sectionNumber, `liveFeed${sectionNumber}`);
-      } else if (sectionNumber === '3') {
-        fetchDataByDepartment(r, 3, `liveFeed${sectionNumber}`);
-      }
+      fetchDataByDepartment(r, sectionNumber, `liveFeed${sectionNumber}`);
+      displayMarkersOnMap(sectionNumber);
     }
 
-    // Initial load of the default section
-    showSection('section5');
+    var d = parseInt(localStorage.getItem('selectedService'));
+    if (d === 1) {
+      showSection('section1');
+    } else if (d === 2) {
+      showSection('section2');
+    } else if (d === 3) {
+      showSection('section3');
+    } else if (d === 4) {
+      showSection('section4');
+    } else {
+      showSection('section5')
+    }
   </script>
-
-  <!-- Buttons and Section Divs -->
-  <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
-  <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
-  <button class="fire-btn" onclick="showSection('section1')"><i class="fas fa-fire"></i> Brandweer</button>
-  <button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
-  <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
-  <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
-  <button class="list-btn" onclick="setRegion()"><i class="fas fa-list"></i> Lijst</button>
-
-  <div class="section" id="section1">
-    <h2>Meldingen voor de Brandweer</h2>
-    <div id="liveFeed1"></div>
-  </div>
-
-  <div class="section" id="section2">
-    <h2>Meldingen voor Ambulance</h2>
-    <div id="liveFeed2"></div>
-  </div>
-
-  <div class="section" id="section3">
-    <h2>Meldingen voor Politie</h2>
-    <div id="liveFeed3"></div>
-  </div>
-
-  <div class="section" id="section4">
-    <h2>Meldingen voor KNRM</h2>
-    <div id="liveFeed4"></div>
-  </div>
-
-  <div class="section" id="section5">
-    <h2>Alle meldingen</h2>
-    <div id="liveFeed5"></div>
-  </div>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </body>
 </html>

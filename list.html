@@ -3,23 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>LiveP2000 Feed</title>
-  <link rel="STYLESHEET" href="list.css" type="text/css">
+  <link rel="STYLESHEET" href="style.css" type="text/css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
   <script>
     function setRegion() {
       var r = localStorage.getItem('selectedRegion');
+      var d = localStorage.getItem('selectedService');
       localStorage.setItem('selectedRegion', r);
-      window.location.href = 'map.html';
+      localStorage.setItem('selectedService', d);
+      window.location.href = 'list.html';
+    }
+    function setService(d) {
+      localStorage.setItem('selectedService', d);
+      console.log(localStorage.getItem('selectedService'));
     }
   </script>
   <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
   <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
-  <button class="fire-btn" onclick="showSection('section1')"><i class="fas fa-fire"></i> Brandweer</button>
-  <button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
-  <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
-  <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
+  <button class="fire-btn" onclick="showSection('section1')" onclick="setService(1)"><i class="fas fa-fire"></i> Brandweer</button>
+  <button class="ambulance-btn" onclick="showSection('section2')" onclick="setService(2)"><i class="fas fa-ambulance"></i> Ambulance</button>
+  <button class="police-btn" onclick="showSection('section3')" onclick="setService(3)"><i class="fas fa-shield-alt"></i> Politie</button>
+  <button class="boat-btn" onclick="showSection('section4')" onclick="setService(4)"><i class="fas fa-ship"></i> KNRM</button>
   <button class="list-btn" onclick="setRegion()"><i class="fas fa-map"></i> Kaart</button>
 
 
@@ -29,17 +35,17 @@
   </div>
 
   <div class="section" id="section2">
-    <h2>Meldingen voor Ambulance</h2>
+    <h2>Meldingen voor de Ambulance</h2>
     <div id="liveFeed2"></div>
   </div>
 
   <div class="section" id="section3">
-    <h2>Meldingen voor Politie</h2>
+    <h2>Meldingen voor de Politie</h2>
     <div id="liveFeed3"></div>
   </div>
 
   <div class="section" id="section4">
-    <h2>Meldingen voor KNRM</h2>
+    <h2>Meldingen voor de KNRM</h2>
     <div id="liveFeed4"></div>
   </div>
 
@@ -52,10 +58,15 @@
     async function fetchData(r, d, containerId) {
       try {
         const proxyUrl = 'https://api.allorigins.win/get?url=';
-        let apiUrl = `https://feeds.livep2000.nl/?r=${r}`;
-
-        if (d != 5) {
+        let apiUrl = `https://feeds.livep2000.nl/`;
+        if (r != 0) {
+          apiUrl += `?r=${r}`;
+        }
+        if (d != 5 && r!=0) {
           apiUrl += `&d=${d}`;
+        }
+        if (d != 5 && r===0) {
+          apiUrl += `?d=${d}`;
         }
         const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
         const data = await response.json(); // Get JSON response from proxy
@@ -111,12 +122,24 @@
       document.getElementById(sectionId).style.display = 'block';
 
       const sectionNumber = sectionId.slice(-1);
+      localStorage.setItem('selectedService', sectionNumber);
       var r = localStorage.getItem('selectedRegion');
       fetchData(r, sectionNumber, `liveFeed${sectionNumber}`);
     }
 
     // Initial load of the default section
-    showSection('section5');
+    var d = parseInt(localStorage.getItem('selectedService'));
+    if (d === 1) {
+      showSection('section1');
+    } else if (d === 2) {
+      showSection('section2');
+    } else if (d === 3) {
+      showSection('section3');
+    } else if (d === 4) {
+      showSection('section4');
+    } else {
+      showSection('section5')
+    }
   </script>
 </body>
 </html>
