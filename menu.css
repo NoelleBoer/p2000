@@ -1,8 +1,11 @@
 body {
-  background-image:url();
+  background-image: url('ambulance.png');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+}
+body img {
+  opacity: 0.4;
 }
 
 h1 {
@@ -24,7 +27,7 @@ h1 {
 
 .button-p {
   align-items: center;
-  background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+  background-image: linear-gradient(144deg,#b58bff,#6a0dad);
   border: 0;
   border-radius: 8px;
   box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
