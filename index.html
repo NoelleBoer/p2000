@@ -9,19 +9,25 @@
 <body>
 
 <h1>Welkom, kies een provincie:</h1>
+<script>
+  function setRegion(region) {
+    localStorage.setItem('selectedRegion', region);
+    window.location.href = 'list.html';
+  }
+</script>
 
 <div id="provinces">
-<button class="button-p" onclick="window.location.href='drenthe.html'" role = "button"><span class="text">Drenthe</span></button>
-<button class="button-p" onclick="window.location.href='flevoland.html'" role="button"><span class="text">Flevoland</span></button>
-<button class="button-p" onclick="window.location.href='friesland.html'" role="button"><span class="text">Friesland</span></button>
+<button onclick="setRegion('3')" class="button-p" role = "button"><span class="text">Drenthe</span></button>
+<button onclick="setRegion('25')" class="button-p" role="button"><span class="text">Flevoland</span></button>
+<button onclick="setRegion('2')" class="button-p" role="button"><span class="text">Friesland</span></button>
 <button class="button-p" onclick="window.location.href='gelderland.html'" role="button"><span class="text">Gelderland</span></button>
-<button class="button-p" onclick="window.location.href='groningen.html'" role="button"><span class="text">Groningen</span></button>
+<button onclick="setRegion('1')" class="button-p" role="button"><span class="text">Groningen</span></button>
 <button class="button-p" onclick="window.location.href='limburg.html'" role="button"><span class="text">Limburg</span></button>
 <button class="button-p" onclick="window.location.href='noordbrabant.html'" role="button"><span class="text">Noord-Brabant</span></button>
 <button class="button-p" onclick="window.location.href='noordholland.html'" role="button"><span class="text">Noord-Holland</span></button>
 <button class="button-p" onclick="window.location.href='overijssel.html'" role="button"><span class="text">Overijssel</span></button>
-<button class="button-p" onclick="window.location.href='utrecht.html'" role="button"><span class="text">Utrecht</span></button>
-<button class="button-p" onclick="window.location.href='zeeland.html'" role="button"><span class="text">Zeeland</span></button>
+<button onclick="setRegion('9')" class="button-p" role="button"><span class="text">Utrecht</span></button>
+<button onclick="setRegion('19')" class="button-p" role="button"><span class="text">Zeeland</span></button>
 <button class="button-p" onclick="window.location.href='zuidholland.html'" role="button"><span class="text">Zuid-Holland</span></button>
 </div>
 

@@ -9,47 +9,16 @@
 </head>
 <body>
   <script>
-  function setRegion() {
-    var r = localStorage.getItem('selectedRegion');
-    localStorage.setItem('selectedRegion', r);
-    window.location.href = 'list.html';
-  }
-  </script>
-  <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
-  <button class="fire-btn" onclick="showSection('section1')"><i class="fas fa-fire"></i> Brandweer</button>
-<button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
-<button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
-<button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
-<button class="list-btn" onclick="setRegion()"><i class="fas fa-list"></i> Lijst</button>
+    function setRegion() {
+      var r = localStorage.getItem('selectedRegion');
+      localStorage.setItem('selectedRegion', r);
+      window.location.href = 'list.html';
+    }
 
-
-  <div class="section" id="section1">
-    <h2>Meldingen voor de Brandweer</h2>
-    <div id="liveFeed1"></div>
-  </div>
-
-  <div class="section" id="section2">
-    <h2>Meldingen voor Ambulance</h2>
-    <div id="liveFeed2"></div>
-  </div>
-
-  <div class="section" id="section3">
-    <h2>Meldingen voor Politie</h2>
-    <div id="liveFeed3"></div>
-  </div>
-
-  <div class="section" id="section4">
-    <h2>Meldingen voor KNRM</h2>
-    <div id="liveFeed4"></div>
-  </div>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  <script>
-    async function fetchData(r, d, containerId) {
+    async function fetchDataByDepartment(r, d, containerId) {
+      let markers = []; // Initialize an array to store markers
       const proxyUrl = 'https://api.allorigins.win/get?url=';
-      const apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
+      let apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
 
       const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
       const data = await response.json(); // Get JSON response from proxy
@@ -68,8 +37,26 @@
         maxZoom: 19,
       }).addTo(map);
 
-      function addMarker(latitude, longitude, title) {
-        L.marker([latitude, longitude]).addTo(map).bindPopup(title);
+      function addMarker(latitude, longitude, title, departmentNumber) {
+        const newMarker = L.marker([latitude, longitude], { department: departmentNumber }).bindPopup(title);
+        markers.push(newMarker); // Store the new marker in the markers array
+      }
+
+      function displayMarkersOnMap(departmentNumber) {
+        // Clear existing markers from the map
+        markers.forEach(marker => {
+          map.removeLayer(marker);
+        });
+
+        // Add markers for the specified department to the map
+        markers.forEach(marker => {
+          const markerDepartment = marker.options.department; // Access department information from marker options
+
+          // Check if the marker belongs to the specified department
+          if (markerDepartment === departmentNumber) {
+            marker.addTo(map);
+          }
+        });
       }
 
       for (let i = 0; i < incidents.length; i++) {
@@ -91,7 +78,7 @@
             <p class="description">${description}</p>
             <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
           </div>`);
-          addMarker(parseFloat(latitude), parseFloat(longitude), title);
+          addMarker(parseFloat(latitude), parseFloat(longitude), title, d);
         } else {
           formattedContent.push(`<div class="incident">
             <p class="title">${title}</p>
@@ -100,6 +87,9 @@
           </div>`);
         }
       }
+
+      // After the loop, call the function to display markers for the current department on the map
+      displayMarkersOnMap(d);
     }
 
     async function showSection(sectionId) {
@@ -111,11 +101,55 @@
 
       const sectionNumber = sectionId.slice(-1);
       var r = localStorage.getItem('selectedRegion');
-      fetchData(r, sectionNumber, `liveFeed${sectionNumber}`);
+
+      // Check the section number and fetch data accordingly
+      if (sectionNumber === '5') {
+        fetchDataByDepartment(r, sectionNumber, `liveFeed${sectionNumber}`);
+      } else if (sectionNumber === '3') {
+        fetchDataByDepartment(r, 3, `liveFeed${sectionNumber}`);
+      }
     }
 
     // Initial load of the default section
-    showSection('section1');
+    showSection('section5');
   </script>
+
+  <!-- Buttons and Section Divs -->
+  <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
+  <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
+  <button class="fire-btn" onclick="showSection('section1')"><i class="fas fa-fire"></i> Brandweer</button>
+  <button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
+  <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
+  <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
+  <button class="list-btn" onclick="setRegion()"><i class="fas fa-list"></i> Lijst</button>
+
+  <div class="section" id="section1">
+    <h2>Meldingen voor de Brandweer</h2>
+    <div id="liveFeed1"></div>
+  </div>
+
+  <div class="section" id="section2">
+    <h2>Meldingen voor Ambulance</h2>
+    <div id="liveFeed2"></div>
+  </div>
+
+  <div class="section" id="section3">
+    <h2>Meldingen voor Politie</h2>
+    <div id="liveFeed3"></div>
+  </div>
+
+  <div class="section" id="section4">
+    <h2>Meldingen voor KNRM</h2>
+    <div id="liveFeed4"></div>
+  </div>
+
+  <div class="section" id="section5">
+    <h2>Alle meldingen</h2>
+    <div id="liveFeed5"></div>
+  </div>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 </body>
 </html>

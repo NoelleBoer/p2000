@@ -95,6 +95,20 @@ button {
   float: right;
 }
 
+.all-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #34495e; /* Purple color for 'Alle meldingen' button */
+  color: #fff;
+  margin: 8px; /* Adjust the margin as needed */
+}
+
+.all-btn i {
+  margin-right: 8px; /* Adjust the space between the icon and text */
+}
+
 /* Hover effect */
 .location-btn:hover,
 .fire-btn:hover,

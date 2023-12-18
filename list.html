@@ -15,11 +15,12 @@
     }
   </script>
   <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
+  <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
   <button class="fire-btn" onclick="showSection('section1')"><i class="fas fa-fire"></i> Brandweer</button>
   <button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
   <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
   <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
-<button class="list-btn" onclick="setRegion()"><i class="fas fa-map"></i> Kaart</button>
+  <button class="list-btn" onclick="setRegion()"><i class="fas fa-map"></i> Kaart</button>
 
 
   <div class="section" id="section1">
@@ -42,12 +43,20 @@
     <div id="liveFeed4"></div>
   </div>
 
+  <div class="section" id="section5">
+    <h2>Alle meldingen</h2>
+    <div id="liveFeed5"></div>
+  </div>
+
   <script>
     async function fetchData(r, d, containerId) {
       try {
         const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
+        let apiUrl = `https://feeds.livep2000.nl/?r=${r}`;
 
+        if (d != 5) {
+          apiUrl += `&d=${d}`;
+        }
         const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
         const data = await response.json(); // Get JSON response from proxy
 
@@ -76,7 +85,7 @@
             formattedContent.push(`<div class="incident">
               <p class="title">${title}</p>
               <p class="description">${description}</p>
-              <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
+              <p class="coordinates">Breedtegraad: ${latitude}, Lengtegraad: ${longitude}</p>
             </div>`);
           } else {
             formattedContent.push(`<div class="incident">
@@ -107,7 +116,7 @@
     }
 
     // Initial load of the default section
-    showSection('section1');
+    showSection('section5');
   </script>
 </body>
 </html>

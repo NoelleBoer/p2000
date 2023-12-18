@@ -7,13 +7,16 @@
 <body>
 
 <h1>Kies een regio:</h1>
+<script>
+  function setRegion(region) {
+    localStorage.setItem('selectedRegion', region);
+    window.location.href = 'list.html';
+  }
+</script>
 
-<button class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Achterhoek</span></button>
-<button class="button-p" style="margin-left:505px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Arnhem Nijmegen</span></button>
-<button class="button-p" style="margin-left:710px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Cleantech</span></button>
-<button class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">FoodValley</span></button>
-<button class="button-p" style="margin-left:300px; margin-top:10px" role="button"><span style="padding:15px" class="text">Noord-Veluwe</span></button>
-<button class="button-p" style="margin-left:300px; margin-top:10px" role="button"><span style="padding:15px" class="text">Rivierenland</span></button>
+<button onclick="setRegion('6')" class="button-p" style="margin-left:915px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Noord- en Oost-Gelderland</span></button>
+<button onclick="setRegion('7')" class="button-p" style="margin-left:505px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Gelderland Midden</span></button>
+<button onclick="setRegion('8')" class="button-p" style="margin-left:710px; margin-top:-64px" role="button"><span style="padding:15px" class="text">Gelderland Zuid</span></button>
 
 <div id="helpbutton">
 <button class="help"><span>?</span></button>
