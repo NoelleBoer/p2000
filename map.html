@@ -10,10 +10,10 @@
 <body>
   <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
   <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
-  <button class="fire-btn" onclick="showSection('section1')" onclick="setService(1)"><i class="fas fa-fire"></i> Brandweer</button>
-  <button class="ambulance-btn" onclick="showSection('section2')" onclick="setService(2)"><i class="fas fa-ambulance"></i> Ambulance</button>
-  <button class="police-btn" onclick="showSection('section3')" onclick="setService(3)"><i class="fas fa-shield-alt"></i> Politie</button>
-  <button class="boat-btn" onclick="showSection('section4')" onclick="setService(4)"><i class="fas fa-ship"></i> KNRM</button>
+  <button class="fire-btn" onclick="showSection('section1')"> <i class="fas fa-fire"></i> Brandweer</button>
+  <button class="ambulance-btn" onclick="showSection('section2')"><i class="fas fa-ambulance"></i> Ambulance</button>
+  <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
+  <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
   <button class="list-btn" onclick="setRegion()"><i class="fas fa-list"></i> Lijst</button>
 
   <div class="section" id="section1">
@@ -53,10 +53,6 @@
       localStorage.setItem('selectedService', d);
       window.location.href = 'list.html';
     }
-    function setService(d) {
-      localStorage.setItem('selectedService', d);
-      console.log(localStorage.getItem('selectedService'));
-    }
 
     function displayMarkersOnMap(departmentNumber) {
       // Clear existing markers from the map
@@ -75,10 +71,50 @@
       });
     }
 
+    let regionCoordinates = {
+      1: [53.2194, 6.5665], // Groningen
+      2: [53.1642, 5.7818], // Friesland (Fryslân)
+      3: [52.8599, 6.6247], // Drenthe
+      4: [52.4974, 6.2597], // IJsselland
+      5: [52.2871, 6.7988], // Twente
+      6: [52.2250, 5.9106], // Noord- en Oost-Gelderland
+      7: [52.0570, 5.8854], // Gelderland-Midden
+      8: [51.8708, 5.8534], // Gelderland-Zuid
+      9: [52.0907, 5.1214], // Utrecht
+      10: [52.6792, 4.7971], // Noord-Holland Noord
+      11: [52.4726, 4.8494], // Zaanstreek-Waterland
+      12: [52.4226, 4.6370], // Kennemerland
+      13: [52.3676, 4.9041], // Amsterdam-Amstelland
+      14: [52.2721, 5.1570], // Gooi en Vechtstreek
+      15: [52.0524, 4.3168], // Haaglanden
+      16: [52.1267, 4.4974], // Hollands Midden
+      17: [51.9225, 4.4792], // Rotterdam-Rijnmond
+      18: [51.8153, 4.6731], // Zuid-Holland Zuid
+      19: [51.5142, 3.8497], // Zeeland
+      20: [51.6373, 4.6031], // Midden- en West-Brabant
+      21: [51.7292, 5.2970], // Brabant-Noord
+      22: [51.4315, 5.4733], // Brabant-Zuidoost
+      23: [51.4975, 6.1025], // Limburg-Noord
+      24: [50.8772, 5.9220], // Zuid-Limburg
+      25: [52.5281, 5.5215] // Flevoland
+    };
+
     async function fetchDataByDepartment(r, d, containerId) {
       const proxyUrl = 'https://api.allorigins.win/get?url=';
-      let apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
+      let apiUrl = `https://feeds.livep2000.nl/`;
+      let map;
 
+      if (r !== '0') {
+        apiUrl += `?r=${r}`;
+      }
+
+      if (d !== 5 && r !== '0') {
+        apiUrl += `&d=${d}`;
+      }
+
+      if (d !== 5 && r === '0') {
+        apiUrl += `?d=${d}`;
+      }
       const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
       const data = await response.json(); // Get JSON response from proxy
 
@@ -89,8 +125,12 @@
       // Extract specific elements or attributes from the XML
       const incidents = xmlDoc.getElementsByTagName('item');
       const formattedContent = [];
-
-      let map = L.map('map').setView([52.3676, 4.9041], 8); // Default view
+      if (regionCoordinates.hasOwnProperty(r)) {
+        let coordinates = regionCoordinates[r];
+        map = L.map('map').setView(coordinates, 10); // Default view
+      } else {
+        map = L.map('map').setView([52.3676, 4.9041], 8); // Default view
+      }
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
