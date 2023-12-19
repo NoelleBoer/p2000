@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alarmeringen Nederland</title>
+  <link rel="STYLESHEET" href="style.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <script>
+    function setRegion() {
+      var r = localStorage.getItem('selectedRegion');
+      var d = localStorage.getItem('selectedService');
+      localStorage.setItem('selectedRegion', r);
+      localStorage.setItem('selectedService', d);
+      window.location.href = 'map.html';
+    }
+    function setService(d) {
+      localStorage.setItem('selectedService', d);
+      console.log(localStorage.getItem('selectedService'));
+    }
+  </script>
+  <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
+  <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
+  <button class="fire-btn" onclick="showSection('section1')" onclick="setService(1)"><i class="fas fa-fire"></i> Brandweer</button>
+  <button class="ambulance-btn" onclick="showSection('section2')" onclick="setService(2)"><i class="fas fa-ambulance"></i> Ambulance</button>
+  <button class="police-btn" onclick="showSection('section3')" onclick="setService(3)"><i class="fas fa-shield-alt"></i> Politie</button>
+  <button class="boat-btn" onclick="showSection('section4')" onclick="setService(4)"><i class="fas fa-ship"></i> KNRM</button>
+  <button class="list-btn" onclick="setRegion()"><i class="fas fa-map"></i> Kaart</button>
+
+
+  <div class="section" id="section1">
+    <h2>Meldingen voor de Brandweer</h2>
+    <div id="liveFeed1"></div>
+  </div>
+
+  <div class="section" id="section2">
+    <h2>Meldingen voor de Ambulance</h2>
+    <div id="liveFeed2"></div>
+  </div>
+
+  <div class="section" id="section3">
+    <h2>Meldingen voor de Politie</h2>
+    <div id="liveFeed3"></div>
+  </div>
+
+  <div class="section" id="section4">
+    <h2>Meldingen voor de KNRM</h2>
+    <div id="liveFeed4"></div>
+  </div>
+
+  <div class="section" id="section5">
+    <h2>Alle meldingen</h2>
+    <div id="liveFeed5"></div>
+  </div>
+
+  <script>
+    async function fetchData(r, d, containerId) {
+      try {
+        const proxyUrl = 'https://api.allorigins.win/get?url=';
+        let apiUrl = `https://feeds.livep2000.nl/`;
+        if (r != 0) {
+          apiUrl += `?r=${r}`;
+        }
+        if (d != 5 && r!=0) {
+          apiUrl += `&d=${d}`;
+        }
+        if (d != 5 && r===0) {
+          apiUrl += `?d=${d}`;
+        }
+        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+        const data = await response.json(); // Get JSON response from proxy
+
+        // Parse the fetched data from the proxy response
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+
+        // Extract specific elements or attributes from the XML
+        const incidents = xmlDoc.getElementsByTagName('item');
+        const formattedContent = [];
+
+        for (let i = 0; i < incidents.length; i++) {
+          const incident = incidents[i];
+          const title = incident.querySelector('title')?.textContent || 'Title not available';
+          const description = incident.querySelector('description')?.textContent || 'Description not available';
+          const latitudeElement = incident.getElementsByTagNameNS('*', 'lat')[0];
+          const longitudeElement = incident.getElementsByTagNameNS('*', 'long')[0];
+
+          let latitude = 'Latitude not available';
+          let longitude = 'Longitude not available';
+
+          if (latitudeElement && longitudeElement) {
+            latitude = latitudeElement.textContent || 'Latitude not available';
+            longitude = longitudeElement.textContent || 'Longitude not available';
+
+            formattedContent.push(`<div class="incident">
+              <p class="title">${title}</p>
+              <p class="description">${description}</p>
+              <p class="coordinates">Breedtegraad: ${latitude}, Lengtegraad: ${longitude}</p>
+            </div>`);
+          } else {
+            formattedContent.push(`<div class="incident">
+              <p class="title">${title}</p>
+              <p class="description">${description}</p>
+              <p class="coordinates">Coordinates not available</p>
+            </div>`);
+          }
+        }
+
+        // Display the formatted content in the respective section's div
+        document.getElementById(containerId).innerHTML = formattedContent.join('');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    async function showSection(sectionId) {
+      const sections = document.getElementsByClassName('section');
+      for (let i = 0; i < sections.length; i++) {
+        sections[i].style.display = 'none';
+      }
+      document.getElementById(sectionId).style.display = 'block';
+
+      const sectionNumber = sectionId.slice(-1);
+      localStorage.setItem('selectedService', sectionNumber);
+      var r = localStorage.getItem('selectedRegion');
+      fetchData(r, sectionNumber, `liveFeed${sectionNumber}`);
+    }
+
+    // Initial load of the default section
+    var d = parseInt(localStorage.getItem('selectedService'));
+    if (d === 1) {
+      showSection('section1');
+    } else if (d === 2) {
+      showSection('section2');
+    } else if (d === 3) {
+      showSection('section3');
+    } else if (d === 4) {
+      showSection('section4');
+    } else {
+      showSection('section5')
+    }
+  </script>
+</body>
+</html>
