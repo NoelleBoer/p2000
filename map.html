@@ -46,32 +46,9 @@
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script>
     let markers = []; // Initialize an array to store markers
-    function setRegion() {
-      var r = localStorage.getItem('selectedRegion');
-      var d = localStorage.getItem('selectedService');
-      localStorage.setItem('selectedRegion', r);
-      localStorage.setItem('selectedService', d);
-      window.location.href = 'list.html';
-    }
-
-    function displayMarkersOnMap(departmentNumber) {
-      // Clear existing markers from the map
-      markers.forEach(marker => {
-        map.removeLayer(marker);
-      });
-
-      // Add markers for the specified department to the map
-      markers.forEach(marker => {
-        const markerDepartment = marker.options.department; // Access department information from marker options
-
-        // Check if the marker belongs to the specified department
-        if (markerDepartment === departmentNumber) {
-          marker.addTo(map);
-        }
-      });
-    }
-
+    let map; // Initialize map
     let regionCoordinates = {
+      0: [52.3676, 4.9041],
       1: [53.2194, 6.5665], // Groningen
       2: [53.1642, 5.7818], // Friesland (Fryslân)
       3: [52.8599, 6.6247], // Drenthe
@@ -99,10 +76,34 @@
       25: [52.5281, 5.5215] // Flevoland
     };
 
+    function setRegion() {
+      var r = localStorage.getItem('selectedRegion');
+      var d = localStorage.getItem('selectedService');
+      localStorage.setItem('selectedRegion', r);
+      localStorage.setItem('selectedService', d);
+      window.location.href = 'list.html';
+    }
+
+    function displayMarkersOnMap(departmentNumber) {
+      // Clear existing markers from the map
+      markers.forEach(marker => {
+        map.removeLayer(marker);
+      });
+
+      // Add markers for the specified department to the map
+      markers.forEach(marker => {
+        const markerDepartment = marker.options.department; // Access department information from marker options
+
+        // Check if the marker belongs to the specified department
+        if (markerDepartment === departmentNumber) {
+          marker.addTo(map);
+        }
+      });
+    }
+
     async function fetchDataByDepartment(r, d, containerId) {
       const proxyUrl = 'https://api.allorigins.win/get?url=';
       let apiUrl = `https://feeds.livep2000.nl/`;
-      let map;
 
       if (r !== '0') {
         apiUrl += `?r=${r}`;
@@ -115,6 +116,7 @@
       if (d !== 5 && r === '0') {
         apiUrl += `?d=${d}`;
       }
+
       const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
       const data = await response.json(); // Get JSON response from proxy
 
@@ -125,12 +127,6 @@
       // Extract specific elements or attributes from the XML
       const incidents = xmlDoc.getElementsByTagName('item');
       const formattedContent = [];
-      if (regionCoordinates.hasOwnProperty(r)) {
-        let coordinates = regionCoordinates[r];
-        map = L.map('map').setView(coordinates, 10); // Default view
-      } else {
-        map = L.map('map').setView([52.3676, 4.9041], 8); // Default view
-      }
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -180,16 +176,27 @@
         sections[i].style.display = 'none';
       }
       document.getElementById(sectionId).style.display = 'block';
-
       const sectionNumber = sectionId.slice(-1);
       var r = localStorage.getItem('selectedRegion');
       localStorage.setItem('selectedService', sectionNumber);
-      // Check the section number and fetch data accordingly
       fetchDataByDepartment(r, sectionNumber, `liveFeed${sectionNumber}`);
       displayMarkersOnMap(sectionNumber);
     }
 
+    var r = localStorage.getItem('selectedRegion');
     var d = parseInt(localStorage.getItem('selectedService'));
+
+    if (isNaN(d) || d === null) {
+      d = 5;
+    }
+
+    let coordinates = regionCoordinates[parseInt(r)];
+    map = L.map('map').setView(coordinates, 9);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+    }).addTo(map);
+
     if (d === 1) {
       showSection('section1');
     } else if (d === 2) {
