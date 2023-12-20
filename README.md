@@ -21,6 +21,8 @@ node server.js
 
 Open index.html in your preferred web browser.
 
+run `npm install` to install dependencies for the javascript code
+
 Usage
 
 Navigation:
