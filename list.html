@@ -124,6 +124,8 @@
         document.getElementById(containerId).innerHTML = formattedContent.join('');
       } catch (error) {
         console.error('Error fetching data:', error);
+        // Display a message on the screen indicating the absence of data with chosen filters
+        document.getElementById(containerId).innerHTML = '<p>Er is geen data beschikbaar met de gekozen filters.</p>';
       }
     }
 
