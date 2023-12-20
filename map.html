@@ -75,6 +75,34 @@
       24: [50.8772, 5.9220], // Zuid-Limburg
       25: [52.5281, 5.5215] // Flevoland
     };
+    let regionZoom = {
+      0: 8,
+      1: 10, // Groningen
+      2: 9, // Friesland (Fryslân)
+      3: 9, // Drenthe
+      4: 10, // IJsselland
+      5: 11, // Twente
+      6: 9, // Noord- en Oost-Gelderland
+      7: 10, // Gelderland-Midden
+      8: 10, // Gelderland-Zuid
+      9: 10, // Utrecht
+      10: 9, // Noord-Holland Noord
+      11: 11, // Zaanstreek-Waterland
+      12: 9, // Kennemerland
+      13: 11, // Amsterdam-Amstelland
+      14: 12, // Gooi en Vechtstreek
+      15: 11, // Haaglanden
+      16: 10, // Hollands Midden
+      17: 11, // Rotterdam-Rijnmond
+      18: 10, // Zuid-Holland Zuid
+      19: 10, // Zeeland
+      20: 10, // Midden- en West-Brabant
+      21: 10, // Brabant-Noord
+      22: 11, // Brabant-Zuidoost
+      23: 9, // Limburg-Noord
+      24: 8, // Zuid-Limburg
+      25: 9 // Flevoland
+    };
 
     function setRegion() {
       var r = localStorage.getItem('selectedRegion');
@@ -199,7 +227,8 @@
     }
 
     let coordinates = regionCoordinates[parseInt(r)];
-    map = L.map('map').setView(coordinates, 9);
+    let zoomLevel = regionZoom[parseInt(r)];
+    map = L.map('map').setView(coordinates, zoomLevel);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
