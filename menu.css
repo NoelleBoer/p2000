@@ -131,3 +131,33 @@ h1 {
   bottom: 7px;
   right: 10px;
 }
+
+/* Responsive CSS */
+@media only screen and (max-width: 768px) {
+  body {
+    background-image:none;
+    background-color: #f3f3f3; /* Add a solid background color */
+  }
+
+  #provinces {
+    max-width: 90%; /* Adjust max width for smaller screens */
+    margin-top: 15vh; /* Adjust margin top */
+  }
+  #regions {
+    width: 100%;
+  }
+
+  .button-p {
+    font-size: 18px; /* Adjust button font size for smaller screens */
+    min-width: 140px; /* Adjust minimum button width */
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  h1 {
+    font-size: 200%; /* Further reduce font size for smaller screens */
+  }
+  .button-p {
+    font-size: 16px; /* Adjust button font size for even smaller screens */
+  }
+}
