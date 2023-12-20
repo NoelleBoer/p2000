@@ -93,7 +93,7 @@ button:hover {
   color: #666;
 }
 
-.coordinates {
+.coordinates, .date{
   margin-top: 5px;
   color: #999;
 }

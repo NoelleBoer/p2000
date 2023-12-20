@@ -143,9 +143,15 @@
         const description = incident.querySelector('description')?.textContent || 'Description not available';
         const latitudeElement = incident.getElementsByTagNameNS('*', 'lat')[0];
         const longitudeElement = incident.getElementsByTagNameNS('*', 'long')[0];
+        const pubDate = incident.querySelector('pubDate')?.textContent || 'Date not available';
 
         let latitude = 'Latitude not available';
         let longitude = 'Longitude not available';
+        let formattedDate = 'Date not available';
+
+        // Extract and format date and time
+          const dateObj = new Date(pubDate);
+          formattedDate = dateObj.toLocaleString();
 
         if (latitudeElement && longitudeElement) {
           latitude = latitudeElement.textContent || 'Latitude not available';
@@ -155,6 +161,7 @@
             <p class="title">${title}</p>
             <p class="description">${description}</p>
             <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
+            <p class="date">Datum en tijd: ${formattedDate}</p>
           </div>`);
           addMarker(parseFloat(latitude), parseFloat(longitude), title, d);
         } else {
@@ -162,6 +169,7 @@
             <p class="title">${title}</p>
             <p class="description">${description}</p>
             <p class="coordinates">Coordinates not available</p>
+            <p class="date">Datum en tijd: ${formattedDate}</p>
           </div>`);
         }
       }
