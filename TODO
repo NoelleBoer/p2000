@@ -1,7 +1,6 @@
 - Fix the change-will bug
-- Empty marker history when button is clicked
-
 - Get online
+
 - Implement different placemarker colors for different service
 - Implement hotkeys
 - Darkmode
