@@ -153,16 +153,15 @@
       let apiUrl = `https://feeds.livep2000.nl/`;
       const newMarkers = []; // Temporary array to store new markers
 
-      if (r !== '0') {
+      if (r===0){
+        if (d!=5) {
+          apiUrl += `?d=${d}`;
+        }
+      } else {
         apiUrl += `?r=${r}`;
-      }
-
-      if (d !== 5 && r !== '0') {
-        apiUrl += `&d=${d}`;
-      }
-
-      if (d !== 5 && r === '0') {
-        apiUrl += `?d=${d}`;
+        if (d!=5){
+          apiUrl += `&d=${d}`;
+        }
       }
 
       const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
@@ -244,10 +243,6 @@
 
     var r = localStorage.getItem('selectedRegion');
     var d = parseInt(localStorage.getItem('selectedService'));
-
-    if (isNaN(d) || d === null) {
-      d = 5;
-    }
 
     let coordinates = regionCoordinates[parseInt(r)];
     let zoomLevel = regionZoom[parseInt(r)];
