@@ -45,6 +45,10 @@
 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script>
+    // Refresh the page every 60 seconds (60000 milliseconds)
+    setInterval(() => {
+    window.location.reload();
+    }, 60000);
     let markers = []; // Initialize an array to store markers
     let map; // Initialize map
     let regionCoordinates = {

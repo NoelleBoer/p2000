@@ -8,6 +8,10 @@
 </head>
 <body>
   <script>
+    // Refresh the page every 60 seconds (60000 milliseconds)
+    setInterval(() => {
+    window.location.reload();
+    }, 60000);
     function setRegion() {
       var r = localStorage.getItem('selectedRegion');
       var d = localStorage.getItem('selectedService');
