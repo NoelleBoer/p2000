@@ -1,10 +1,12 @@
 - Write README
-- Autorefresh
 - Add time and date
+- Correct autozoom
+
+- Autorefresh
 - Improve help page
 - Fix the change-will bug
-- Correct autozoom
 - Make responsive
+
 - Darkmode
 - Implement different placemarker colors for different service
 - Implement hotkeys
