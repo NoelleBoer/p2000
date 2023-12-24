@@ -10,8 +10,33 @@
 </head>
 <body>
   <script>
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'k') {//switch to map view
+      setRegion();
+    } else if (event.key === 'a') {
+      showSection('section5'); // Show all notifications
+    }else if (event.key === '1') {
+      showSection('section1'); // d=1
+    } else if (event.key === '2') {
+      showSection('section2'); // d=2
+    } else if (event.key === '3') {
+      showSection('section3'); // d=3
+    }else if (event.key === '4') {
+      showSection('section4'); // d=4
+    } else if (event.key === 't') { // go back
+     window.location.href='index.html'
+   } else if (event.key === 'm') {
+       if (localStorage.getItem('darkMode') !== 'enabled') {
+           enableDarkMode();
+       } else {
+           disableDarkMode();
+       }
+       window.location.reload();
+   }
+  });
+  </script>
+  <script>
     //darkmode code
-    const darkModeToggle = document.getElementById('darkModeToggle');
     const body = document.body;
 
     // Check if dark mode is enabled in localStorage
@@ -24,6 +49,7 @@
 
     // Function to enable dark mode
     function enableDarkMode() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
       body.classList.add('dark-mode');
       localStorage.setItem('darkMode', 'enabled');
       darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> Lichte modus';
@@ -31,6 +57,7 @@
 
     // Function to disable dark mode
     function disableDarkMode() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
       body.classList.remove('dark-mode');
       localStorage.setItem('darkMode', null);
       darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Donkere modus';
