@@ -17,7 +17,11 @@
           setRegion('23'); // Simulate click on Limburg-Noord button when '1' is pressed
         } else if (event.key === '2') {
           setRegion('24'); // Simulate click on Zuid-Limburg button when '2' is pressed
-        }
+        } else if (event.key === 'h') {
+          window.location.href='help.html'
+        } else if (event.key === 't') {
+         window.location.href='index.html'
+       }
       });
     </script>
   </head>
@@ -29,7 +33,7 @@
       <button onclick="setRegion('24')" class="button-p" role="button"><span class="text">Zuid-Limburg</span></button>
     </div>
     <div id="helpbutton">
-      <button class="help"><span>?</span></button>
+      <button class="help" onclick="window.location.href='help.html'" role = "button"><span>?</span></button>
     </div>
   </body>
 </html>

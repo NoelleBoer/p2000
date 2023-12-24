@@ -14,6 +14,37 @@
         localStorage.setItem('selectedRegion', region);
         window.location.href = 'map.html';
       }
+      document.addEventListener('keydown', function(event) {
+        if (event.key === '1') {
+          setRegion('3'); // Simulate click on Drenthe button when '1' is pressed
+        } else if (event.key === '2') {
+          setRegion('25'); // Simulate click on Flevoland button when '2' is pressed
+        }else if (event.key === '3') {
+          setRegion('2'); // Simulate click on Friesland button when '3' is pressed
+        }else if (event.key === '4') {
+          window.location.href='gelderland.html'; // Simulate click on Gelderland button when '4' is pressed
+        }else if (event.key === '5') {
+          setRegion('1'); // Simulate click on Groningen button when '5' is pressed
+        }else if (event.key === '6') {
+          window.location.href='limburg.html'; // Simulate click on Limburg button when '6' is pressed
+        }else if (event.key === '7') {
+          window.location.href='noordbrabant.html'; // Simulate click on Noord-Brabant button when '7' is pressed
+        }else if (event.key === '8') {
+          window.location.href='noordholland.html'; // Simulate click on Noord-Holland button when '8' is pressed
+        }else if (event.key === '9') {
+          window.location.href='overijssel.html'; // Simulate click on Overijssel button when '9' is pressed
+        }else if (event.key === 'a') {
+          setRegion('9'); // Simulate click on Utrecht button when 'a' is pressed
+        }else if (event.key === 'b') {
+          setRegion('19'); // Simulate click on Zeeland button when 'b' is pressed
+        }else if (event.key === 'c') {
+          window.location.href='zuidholland.html'; // Simulate click on Zuid-Holland button when 'c' is pressed
+        }else if (event.key === 'h') {
+          window.location.href='help.html'
+        }else if (event.key === 'z') {
+          setRegion('0');
+        }
+      });
     </script>
     <div id="provinces">
       <button onclick="setRegion('3')" class="button-p" role = "button"><span class="text">Drenthe</span></button>

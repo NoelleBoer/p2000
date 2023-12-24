@@ -19,7 +19,11 @@
           setRegion('21'); // Simulate click on Brabant-Noord button when '2' is pressed
         } else if (event.key === '3') {
           setRegion('22'); // Simulate click on Brabant-Zuidoost button when '3' is pressed
-        }
+        } else if (event.key === 'h') {
+          window.location.href='help.html'
+        } else if (event.key === 't') {
+         window.location.href='index.html'
+       }
       });
     </script>
   </head>
@@ -32,7 +36,7 @@
       <button onclick="setRegion('22')" class="button-p" role="button"><span class="text">Brabant-Zuidoost</span></button>
     </div>
     <div id="helpbutton">
-      <button class="help"><span>?</span></button>
+      <button class="help" onclick="window.location.href='help.html'" role = "button"><span>?</span></button>
     </div>
   </body>
 </html>

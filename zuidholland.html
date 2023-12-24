@@ -21,7 +21,11 @@
           setRegion('17'); // Simulate click on Rotterdam-Rijnmond button when '3' is pressed
         } else if (event.key === '4') {
           setRegion('18'); // Simulate click on Zuid-Holland-Zuid button when '4' is pressed
-        }
+        } else if (event.key === 'h') {
+          window.location.href='help.html'
+        } else if (event.key === 't') {
+         window.location.href='index.html'
+       }
       });
     </script>
   </head>
@@ -35,7 +39,7 @@
       <button onclick="setRegion('18')" class="button-p" role="button"><span class="text">Zuid-Holland-Zuid</span></button>
     </div>
     <div id="helpbutton">
-      <button class="help"><span>?</span></button>
+      <button class="help" onclick="window.location.href='help.html'" role = "button"><span>?</span></button>
     </div>
   </body>
 </html>
