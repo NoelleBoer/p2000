@@ -6,16 +6,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="logo.png">
     <title>Gelderland - Kies een regio</title>
-  </head>
-  <body>
-    <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kies uw provincie</button>
-    <h1>Kies uw regio:</h1>
     <script>
       function setRegion(region) {
         localStorage.setItem('selectedRegion', region);
         window.location.href = 'map.html';
       }
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === '1') {
+          setRegion('6'); // Simulate click on Noord- en Oost-Gelderland button when '1' is pressed
+        } else if (event.key === '2') {
+          setRegion('7'); // Simulate click on Gelderland Midden button when '2' is pressed
+        } else if (event.key === '3') {
+          setRegion('8'); // Simulate click on Gelderland Zuid button when '3' is pressed
+        }
+      });
     </script>
+  </head>
+  <body>
+    <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kies uw provincie</button>
+    <h1>Kies uw regio:</h1>
     <div id="regions">
       <button onclick="setRegion('6')" class="button-p" role="button"><span class="text">Noord- en Oost-Gelderland</span></button>
       <button onclick="setRegion('7')" class="button-p" role="button"><span class="text">Gelderland Midden</span></button>

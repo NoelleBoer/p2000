@@ -6,16 +6,30 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Noord-Holland - Kies een regio</title>
     <link rel="icon" type="image/x-icon" href="logo.png">
-  </head>
-  <body>
-    <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kies uw provincie</button>
-    <h1>Kies uw regio:</h1>
     <script>
       function setRegion(region) {
         localStorage.setItem('selectedRegion', region);
         window.location.href = 'map.html';
       }
+
+      document.addEventListener('keydown', function(event) {
+        if (event.key === '1') {
+          setRegion('10'); // Simulate click on Noord-Holland-Noord button when '1' is pressed
+        } else if (event.key === '2') {
+          setRegion('11'); // Simulate click on Zaanstreek-Waterland button when '2' is pressed
+        } else if (event.key === '3') {
+          setRegion('12'); // Simulate click on Kennemerland button when '3' is pressed
+        } else if (event.key === '4') {
+          setRegion('13'); // Simulate click on Amsterdam-Amstelland button when '4' is pressed
+        } else if (event.key === '5') {
+          setRegion('14'); // Simulate click on Gooi en Vechtstreek button when '5' is pressed
+        }
+      });
     </script>
+  </head>
+  <body>
+    <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Kies uw provincie</button>
+    <h1>Kies uw regio:</h1>
     <div id="regions">
       <button onclick="setRegion('10')" class="button-p" role="button"><span class="text">Noord-Holland-Noord</span></button>
       <button onclick="setRegion('11')" class="button-p" role="button"><span class="text">Zaanstreek-Waterland</span></button>
