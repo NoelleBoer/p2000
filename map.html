@@ -10,6 +10,17 @@
   <link rel="icon" type="image/x-icon" href="logo.png">
 </head>
 <body>
+  <script>
+  let userLatitude = 0;
+  let userLongitude = 0;
+  function adjustUserLocation(position) {
+    userLatitude = position.coords.latitude;
+    userLongitude = position.coords.longitude;
+  }
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(adjustUserLocation);
+  }
+  </script>
   <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
   <button class="all-btn" onclick="showSection('section5')"><i class="fas fa-bell"></i> Alle meldingen</button>
   <button class="fire-btn" onclick="showSection('section1')"> <i class="fas fa-fire"></i> Brandweer</button>
@@ -219,6 +230,20 @@
         }).addTo(map);
       }
 
+      function addUserMarker(){
+        let userMarker;
+
+        if (userLatitude !== 0 && userLongitude !== 0) {
+          const userIcon = L.icon({
+            iconUrl: 'userMarker.png',
+            iconSize: [42, 42], // Adjust the size as needed
+          });
+
+          userMarker = L.marker([userLatitude, userLongitude], { icon: userIcon }).addTo(map);
+          userMarker.bindPopup('Uw locatie'); // You can set a popup for the user's marker
+        }
+      }
+
       // Function to add markers to the temporary array
       function addMarker(latitude, longitude, title, departmentNumber, timestamp, formattedContent, newMarkers) {
         let markerIcon;
@@ -273,7 +298,9 @@
         }
       }
 
-
+      if (userLatitude!==0){
+        addUserMarker();
+      }
       for (let i = 0; i < incidents.length; i++) {
         const incident = incidents[i];
         const title = incident.querySelector('title')?.textContent || 'Title not available';
