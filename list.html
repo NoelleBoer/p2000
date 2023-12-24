@@ -143,7 +143,7 @@
         if (d != 5 && r!=0) {
           apiUrl += `&d=${d}`;
         }
-        if (d != 5 && r===0) {
+        if (d != 5 && r==0) {
           apiUrl += `?d=${d}`;
         }
         const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
