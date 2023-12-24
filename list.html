@@ -6,9 +6,42 @@
   <link rel="STYLESHEET" href="style.css" type="text/css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="logo.png">
 </head>
 <body>
   <script>
+    //darkmode code
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    // Check if dark mode is enabled in localStorage
+    const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+    // Set initial mode based on user's preference
+    if (isDarkMode) {
+      enableDarkMode();
+    }
+
+    // Function to enable dark mode
+    function enableDarkMode() {
+      body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'enabled');
+    }
+
+    // Function to disable dark mode
+    function disableDarkMode() {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', null);
+    }
+
+    // Toggle dark mode on button click
+    darkModeToggle.addEventListener('click', () => {
+      if (localStorage.getItem('darkMode') !== 'enabled') {
+        enableDarkMode();
+      } else {
+        disableDarkMode();
+      }
+    });
     // Refresh the page every 60 seconds (60000 milliseconds)
     setInterval(() => {
     window.location.reload();
@@ -32,7 +65,7 @@
   <button class="police-btn" onclick="showSection('section3')" onclick="setService(3)"><i class="fas fa-shield-alt"></i> Politie</button>
   <button class="boat-btn" onclick="showSection('section4')" onclick="setService(4)"><i class="fas fa-ship"></i> KNRM</button>
   <button class="list-btn" onclick="setRegion()"><i class="fas fa-map"></i> Kaart</button>
-
+  <button id="darkModeToggle"><i class="fas fa-moon"></i> Donkere modus</button>
 
   <div class="section" id="section1">
     <h2>Meldingen voor de Brandweer</h2>
@@ -60,6 +93,39 @@
   </div>
 
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const darkModeToggle = document.getElementById('darkModeToggle');
+      const body = document.body;
+
+      // Check if dark mode is enabled in localStorage
+      const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+      // Set initial mode based on user's preference
+      if (isDarkMode) {
+        enableDarkMode();
+      }
+
+      // Function to enable dark mode
+      function enableDarkMode() {
+        body.classList.add('dark-mode');
+        localStorage.setItem('darkMode', 'enabled');
+      }
+
+      // Function to disable dark mode
+      function disableDarkMode() {
+        body.classList.remove('dark-mode');
+        localStorage.setItem('darkMode', null);
+      }
+
+      // Toggle dark mode on button click
+      darkModeToggle.addEventListener('click', () => {
+        if (localStorage.getItem('darkMode') !== 'enabled') {
+          enableDarkMode();
+        } else {
+          disableDarkMode();
+        }
+      });
+    });
     async function fetchData(r, d, containerId) {
       try {
         const proxyUrl = 'https://api.allorigins.win/get?url=';

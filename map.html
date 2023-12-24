@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="logo.png">
 </head>
 <body>
   <button class="location-btn" onclick="window.location.href='index.html'"><i class="fas fa-arrow-left"></i> Verander uw locatie</button><br>
@@ -16,6 +17,7 @@
   <button class="police-btn" onclick="showSection('section3')"><i class="fas fa-shield-alt"></i> Politie</button>
   <button class="boat-btn" onclick="showSection('section4')"><i class="fas fa-ship"></i> KNRM</button>
   <button class="list-btn" onclick="setRegion()"><i class="fas fa-list"></i> Lijst</button>
+  <button id="darkModeToggle"><i class="fas fa-moon"></i> Donkere modus</button>
 
   <div class="section" id="section1">
     <h2>Meldingen voor de Brandweer</h2>
@@ -46,6 +48,39 @@
 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+
+    // Check if dark mode is enabled in localStorage
+    const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+    // Set initial mode based on user's preference
+    if (isDarkMode) {
+      enableDarkMode();
+    }
+
+    // Function to enable dark mode
+    function enableDarkMode() {
+      body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'enabled');
+    }
+
+    // Function to disable dark mode
+    function disableDarkMode() {
+      body.classList.remove('dark-mode');
+      localStorage.setItem('darkMode', null);
+    }
+
+    // Toggle dark mode on button click
+    darkModeToggle.addEventListener('click', () => {
+      if (localStorage.getItem('darkMode') !== 'enabled') {
+        enableDarkMode();
+      } else {
+        disableDarkMode();
+      }
+    });
+  });
     // Refresh the page every 60 seconds (60000 milliseconds)
     setInterval(() => {
     window.location.reload();
@@ -175,7 +210,7 @@
       const incidents = xmlDoc.getElementsByTagName('item');
       const formattedContent = [];
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 19,
       }).addTo(map);
 
@@ -248,9 +283,10 @@
     let zoomLevel = regionZoom[parseInt(r)];
     map = L.map('map').setView(coordinates, zoomLevel);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
     }).addTo(map);
+
 
     if (d === 1) {
       showSection('section1');
