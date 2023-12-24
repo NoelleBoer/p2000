@@ -64,12 +64,14 @@
     function enableDarkMode() {
       body.classList.add('dark-mode');
       localStorage.setItem('darkMode', 'enabled');
+      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>  Lichte modus';
     }
 
     // Function to disable dark mode
     function disableDarkMode() {
       body.classList.remove('dark-mode');
       localStorage.setItem('darkMode', null);
+      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Donkere modus';
     }
 
     // Toggle dark mode on button click
@@ -79,6 +81,7 @@
       } else {
         disableDarkMode();
       }
+      window.location.reload();
     });
   });
     // Refresh the page every 60 seconds (60000 milliseconds)
@@ -210,9 +213,15 @@
       const incidents = xmlDoc.getElementsByTagName('item');
       const formattedContent = [];
 
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-      }).addTo(map);
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          maxZoom: 19,
+        }).addTo(map);
+      } else {
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+        }).addTo(map);
+      }
 
       // Function to add markers to the temporary array
       function addMarker(latitude, longitude, title, departmentNumber, newMarkers) {
@@ -283,9 +292,15 @@
     let zoomLevel = regionZoom[parseInt(r)];
     map = L.map('map').setView(coordinates, zoomLevel);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19,
-    }).addTo(map);
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+      }).addTo(map);
+    } else {
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+      }).addTo(map);
+    }
 
 
     if (d === 1) {

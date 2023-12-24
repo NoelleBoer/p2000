@@ -157,3 +157,11 @@ button:hover {
 .dark-mode h2 {
   color: #ffffff;
 }
+
+.dark-mode .title {
+  color: #d9dadb;
+}
+
+.dark-mode .description {
+  color: #c4c4c4;
+}
