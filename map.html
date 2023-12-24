@@ -97,7 +97,7 @@
       3: [52.8599, 6.6247], // Drenthe
       4: [52.4974, 6.2597], // IJsselland
       5: [52.2871, 6.7988], // Twente
-      6: [52.2250, 5.9106], // Noord- en Oost-Gelderland
+      6: [52.2242, 5.9106], // Noord- en Oost-Gelderland
       7: [52.0570, 5.8854], // Gelderland-Midden
       8: [51.8708, 5.8534], // Gelderland-Zuid
       9: [52.0907, 5.1214], // Utrecht
@@ -115,7 +115,7 @@
       21: [51.7292, 5.2970], // Brabant-Noord
       22: [51.4315, 5.4733], // Brabant-Zuidoost
       23: [51.4975, 6.1025], // Limburg-Noord
-      24: [50.8772, 5.9220], // Zuid-Limburg
+      24: [42.8772, 5.9220], // Zuid-Limburg
       25: [52.5281, 5.5215] // Flevoland
     };
     let regionZoom = {
@@ -169,24 +169,19 @@
     }
 
     function displayMarkersOnMap(departmentNumber) {
-      // Clear existing markers from the map
       markers.forEach(marker => {
-        map.removeLayer(marker);
-      });
+      const markerDepartment = marker.options.department; // Access department information from marker options
 
-
-      // Add markers for the specified department to the map
-      markers.forEach(marker => {
-        const markerDepartment = marker.options.department; // Access department information from marker options
-
-        // Check if the marker belongs to the specified department
-        if (markerDepartment === departmentNumber) {
-          marker.addTo(map);
-        }
-      });
+      // Check if the marker belongs to the specified department
+      if (markerDepartment === departmentNumber || parseInt(departmentNumber) == 5) {
+        marker.addTo(map);
+      } else {
+        map.removeLayer(marker); // Remove markers not belonging to the specified department
+      }
+    });
     }
 
-    async function fetchDataByDepartment(r, d, containerId) {
+    async function fetchDataByDepartment(r, d, containerId, all) {
       const proxyUrl = 'https://api.allorigins.win/get?url=';
       let apiUrl = `https://feeds.livep2000.nl/`;
       const newMarkers = []; // Temporary array to store new markers
@@ -224,8 +219,43 @@
 
       // Function to add markers to the temporary array
       function addMarker(latitude, longitude, title, departmentNumber, newMarkers) {
-        const newMarker = L.marker([latitude, longitude], { department: departmentNumber }).bindPopup(title);
-        newMarkers.push(newMarker); // Store the new marker in the temporary array
+        let markerIcon;
+
+        switch (parseInt(departmentNumber)) {
+          case 1: // Fire department
+            markerIcon = L.icon({
+              iconUrl: 'fireMarker.png',
+              iconSize: [42, 42],
+            });
+            break;
+          case 2: // Ambulance department
+            markerIcon = L.icon({
+              iconUrl: 'ambulanceMarker.png',
+              iconSize: [42, 42],
+            });
+            break;
+          case 3: // Police department
+            markerIcon = L.icon({
+              iconUrl: 'policeMarker.png',
+              iconSize: [42, 42],
+            });
+            break;
+          case 4: // KNRM department
+            markerIcon = L.icon({
+              iconUrl: 'knrmMarker.png',
+              iconSize: [42, 42],
+            });
+            break;
+          default: // Default icon for other departments
+            markerIcon = L.icon({
+              iconUrl: 'defaultMarker.png',
+              iconSize: [42, 42],
+            });
+            break;
+        }
+
+        const newMarker = L.marker([latitude, longitude], { department: departmentNumber, icon: markerIcon }).bindPopup(title);
+        newMarkers.push(newMarker);
       }
 
       for (let i = 0; i < incidents.length; i++) {
@@ -280,8 +310,19 @@
       const sectionNumber = sectionId.slice(-1);
       var r = localStorage.getItem('selectedRegion');
       localStorage.setItem('selectedService', sectionNumber);
-      fetchDataByDepartment(r, sectionNumber, `liveFeed${sectionNumber}`);
-      displayMarkersOnMap(sectionNumber);
+      if (parseInt(sectionId) == 5){
+        fetchDataByDepartment(r, 1, `liveFeed${5}`);
+        displayMarkersOnMap(1, true);
+        fetchDataByDepartment(r, 2, `liveFeed${5}`);
+        displayMarkersOnMap(2, true);
+        fetchDataByDepartment(r, 3, `liveFeed${5}`);
+        displayMarkersOnMap(3, true);
+        fetchDataByDepartment(r, 4, `liveFeed${5}`);
+        displayMarkersOnMap(4, true);
+      } else {
+        fetchDataByDepartment(r, sectionNumber, `liveFeed${sectionNumber}`);
+      }
+      displayMarkersOnMap(sectionNumber, false);
     }
 
     var r = localStorage.getItem('selectedRegion');
