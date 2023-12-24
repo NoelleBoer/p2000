@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LiveP2000 Feed</title>
+  <link rel="STYLESHEET" href="list.css" type="text/css">
+</head>
+<body>
+  <script>
+    function setRegion() {
+      var r = localStorage.getItem('selectedRegion');
+      localStorage.setItem('selectedRegion', r);
+      window.location.href = 'map.html';
+    }
+  </script>
+  <button onclick="window.location.href='index.html'">Verander uw locatie</button>
+  <button onclick="showSection('section1')">Brandweer</button>
+  <button onclick="showSection('section2')">Ambulance</button>
+  <button onclick="showSection('section3')">Politie</button>
+  <button onclick="showSection('section4')">KNRM</button>
+  <button onclick="setRegion()">Map</button>
+
+
+  <div class="section" id="section1">
+    <h2>Meldingen voor de Brandweer</h2>
+    <div id="liveFeed1"></div>
+  </div>
+
+  <div class="section" id="section2">
+    <h2>Meldingen voor Ambulance</h2>
+    <div id="liveFeed2"></div>
+  </div>
+
+  <div class="section" id="section3">
+    <h2>Meldingen voor Politie</h2>
+    <div id="liveFeed3"></div>
+  </div>
+
+  <div class="section" id="section4">
+    <h2>Meldingen voor KNRM</h2>
+    <div id="liveFeed4"></div>
+  </div>
+
+  <script>
+    async function fetchData(r, d, containerId) {
+      try {
+        const proxyUrl = 'https://api.allorigins.win/get?url=';
+        const apiUrl = `https://feeds.livep2000.nl/?r=${r}&d=${d}`;
+
+        const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+        const data = await response.json(); // Get JSON response from proxy
+
+        // Parse the fetched data from the proxy response
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
+
+        // Extract specific elements or attributes from the XML
+        const incidents = xmlDoc.getElementsByTagName('item');
+        const formattedContent = [];
+
+        for (let i = 0; i < incidents.length; i++) {
+          const incident = incidents[i];
+          const title = incident.querySelector('title')?.textContent || 'Title not available';
+          const description = incident.querySelector('description')?.textContent || 'Description not available';
+          const latitudeElement = incident.getElementsByTagNameNS('*', 'lat')[0];
+          const longitudeElement = incident.getElementsByTagNameNS('*', 'long')[0];
+
+          let latitude = 'Latitude not available';
+          let longitude = 'Longitude not available';
+
+          if (latitudeElement && longitudeElement) {
+            latitude = latitudeElement.textContent || 'Latitude not available';
+            longitude = longitudeElement.textContent || 'Longitude not available';
+
+            formattedContent.push(`<div class="incident">
+              <p class="title">${title}</p>
+              <p class="description">${description}</p>
+              <p class="coordinates">Latitude: ${latitude}, Longitude: ${longitude}</p>
+            </div>`);
+          } else {
+            formattedContent.push(`<div class="incident">
+              <p class="title">${title}</p>
+              <p class="description">${description}</p>
+              <p class="coordinates">Coordinates not available</p>
+            </div>`);
+          }
+        }
+
+        // Display the formatted content in the respective section's div
+        document.getElementById(containerId).innerHTML = formattedContent.join('');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    async function showSection(sectionId) {
+      const sections = document.getElementsByClassName('section');
+      for (let i = 0; i < sections.length; i++) {
+        sections[i].style.display = 'none';
+      }
+      document.getElementById(sectionId).style.display = 'block';
+
+      const sectionNumber = sectionId.slice(-1);
+      var r = localStorage.getItem('selectedRegion');
+      fetchData(r, sectionNumber, `liveFeed${sectionNumber}`);
+    }
+
+    // Initial load of the default section
+    showSection('section1');
+  </script>
+</body>
+</html>

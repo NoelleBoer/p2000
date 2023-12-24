@@ -1,0 +1,28 @@
+function getUserLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async position => {
+          const userLatitude = position.coords.latitude.toFixed(6);
+          const userLongitude = position.coords.longitude.toFixed(6);
+
+          try {
+            const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${userLatitude},${userLongitude}&key=AIzaSyC8HHBkc62Ykc4HDRK-Os8ZwGdeR9MHeos`);
+            const data = await response.json();
+            const city = data.results[0]?.address_components.find(component => component.types.includes('locality'))?.long_name || 'Unknown';
+
+            const userLocation = `${city} (${userLatitude}, ${userLongitude})`;
+
+            document.getElementById('userLocation').textContent = userLocation;
+
+            fetchAndDisplayXMLData(city);
+          } catch (error) {
+            console.error('Error getting user location details:', error);
+          }
+        }, error => {
+          console.error('Error getting user location:', error);
+        });
+      } else {
+        console.error('Geolocation is not supported by this browser.');
+      }
+    }
+
+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
