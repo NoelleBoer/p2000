@@ -36,6 +36,38 @@
   });
   </script>
   <script>
+    let userLatitude = 0;
+    let userLongitude = 0;
+    function adjustUserLocation(position) {
+      userLatitude = position.coords.latitude;
+      userLongitude = position.coords.longitude;
+
+      // Once the user location is obtained, fetch data and calculate distance
+      const selectedService = localStorage.getItem('selectedService');
+      const selectedRegion = localStorage.getItem('selectedRegion');
+      fetchData(selectedRegion, selectedService, `liveFeed${selectedService}`);
+    }
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const earthRadius = 6371; // Radius of the Earth in kilometers
+
+      // Convert latitude and longitude from degrees to radians
+      const toRadians = (angle) => (angle * Math.PI) / 180;
+
+      // The differences between the latitudes and longitudes
+      const dLat = toRadians(lat2 - lat1);
+      const dLon = toRadians(lon2 - lon1);
+
+      // Haversine formula to calculate distance
+      const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = earthRadius * c; // Distance in kilometers
+
+      return distance;
+    }
     //darkmode code
     const body = document.body;
 
@@ -159,6 +191,9 @@
           disableDarkMode();
         }
       });
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(adjustUserLocation);
+      }
     });
     async function fetchData(r, d, containerId) {
       try {
@@ -201,20 +236,32 @@
           formattedDate = dateObj.toLocaleString();
 
           if (latitudeElement && longitudeElement) {
-            latitude = latitudeElement.textContent || 'Latitude not available';
-            longitude = longitudeElement.textContent || 'Longitude not available';
+            if (userLatitude !== 0) {
+              let distance = calculateDistance(parseFloat(latitudeElement.textContent), parseFloat(longitudeElement.textContent), parseFloat(userLatitude), parseFloat(userLongitude)).toFixed(2);
+              latitude = latitudeElement.textContent || 'Latitude not available';
+              longitude = longitudeElement.textContent || 'Longitude not available';
 
-            formattedContent.push(`<div class="incident">
-              <p class="title">${title}</p>
-              <p class="description">${description}</p>
-              <p class="coordinates">Breedtegraad: ${latitude}, Lengtegraad: ${longitude}</p>
-              <p class="date">Datum en tijd: ${formattedDate}</p>
-            </div>`);
+              formattedContent.push(`<div class="incident">
+                <p class="title">${title}</p>
+                <p class="description">${description}</p>
+                <p class="coordinates">Hemelsbrede afstand: ${distance} km</p>
+                <p class="date">Datum en tijd: ${formattedDate}</p>
+              </div>`);
+            } else {
+              latitude = latitudeElement.textContent || 'Latitude not available';
+              longitude = longitudeElement.textContent || 'Longitude not available';
+
+              formattedContent.push(`<div class="incident">
+                <p class="title">${title}</p>
+                <p class="description">${description}</p>
+                <p class="coordinates">Breedtegraad: ${latitude}, Lengtegraad: ${longitude}</p>
+                <p class="date">Datum en tijd: ${formattedDate}</p>
+              </div>`);
+            }
           } else {
             formattedContent.push(`<div class="incident">
               <p class="title">${title}</p>
               <p class="description">${description}</p>
-              <p class="coordinates">Coordinates not available</p>
               <p class="date">Datum en tijd: ${formattedDate}</p>
             </div>`);
           }
