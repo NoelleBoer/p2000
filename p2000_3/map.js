@@ -282,7 +282,7 @@ async function fetchDataByDepartment(r, d, containerId, all) {
 
     // Extract and format date and time
       const dateObj = new Date(pubDate);
-      formattedDate = dateObj.toLocaleString();
+      formattedDate = `${('0' + dateObj.getDate()).slice(-2)}/${('0' + (dateObj.getMonth() + 1)).slice(-2)}/${dateObj.getFullYear()} ${('0' + dateObj.getHours()).slice(-2)}:${('0' + dateObj.getMinutes()).slice(-2)}`;
 
     if (latitudeElement && longitudeElement) {
       latitude = latitudeElement.textContent || 'Latitude not available';
