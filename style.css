@@ -131,7 +131,8 @@ button:hover {
   .ambulance-btn,
   .police-btn,
   .boat-btn,
-  .list-btn {
+  .list-btn
+  #darkModeToggle{
     margin-left: 0;
     margin-bottom: 8px;
     width: 100%;

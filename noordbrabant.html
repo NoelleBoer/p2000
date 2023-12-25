@@ -11,7 +11,6 @@
         localStorage.setItem('selectedRegion', region);
         window.location.href = 'map.html';
       }
-
       document.addEventListener('keydown', function(event) {
         if (event.key === '1') {
           setRegion('20'); // Simulate click on Midden- en West-Brabant button when '1' is pressed
@@ -20,9 +19,9 @@
         } else if (event.key === '3') {
           setRegion('22'); // Simulate click on Brabant-Zuidoost button when '3' is pressed
         } else if (event.key === 'h') {
-          window.location.href='help.html'
+          window.location.href='help.html' // Simulate click on help button when '3' is pressed
         } else if (event.key === 't') {
-         window.location.href='index.html'
+         window.location.href='index.html' // Simulate click on go-back button when '3' is pressed
        }
       });
     </script>
