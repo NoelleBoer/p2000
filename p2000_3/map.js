@@ -213,7 +213,7 @@ function addMarker(latitude, longitude, title, departmentNumber, timestamp, form
       });
       break;
   }
-  const formattedTimestamp = new Date(timestamp).toLocaleString(); // Format timestamp
+  const formattedTimestamp = timestamp.toString(); // Format timestamp
   const markerContent = `<div>
     <p>${title}</p>
     <p>Datum en tijd: ${formattedTimestamp}</p>
@@ -278,11 +278,16 @@ async function fetchDataByDepartment(r, d, containerId, all) {
 
     let latitude = 'Latitude not available';
     let longitude = 'Longitude not available';
-    let formattedDate = 'Date not available';
 
-    // Extract and format date and time
-      const dateObj = new Date(pubDate);
-      formattedDate = `${('0' + dateObj.getDate()).slice(-2)}/${('0' + (dateObj.getMonth() + 1)).slice(-2)}/${dateObj.getFullYear()} ${('0' + dateObj.getHours()).slice(-2)}:${('0' + dateObj.getMinutes()).slice(-2)}`;
+    const dateObj = new Date(Date.parse(pubDate));
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric'
+    };
+    const formattedDate = dateObj.toLocaleString('nl-NL', options);
 
     if (latitudeElement && longitudeElement) {
       latitude = latitudeElement.textContent || 'Latitude not available';
